@@ -7,6 +7,7 @@ import Addcustomer from "./Addcustomer";
 import DeleteIcon from '@material-ui/icons/Delete';
 import Addtraining from "./Addtraining";
 import moment from 'moment';
+import MaterialTable from 'material-table';
 
 
 export default function Customerlist() {

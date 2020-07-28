@@ -20,6 +20,9 @@ const Navigator = () => {
                     <li className="nav-item">
                     <Link className="nav-link" to="/trainings">Trainings</Link>
                     </li>
+                    <li className="nav-item">
+                    <Link className="nav-link" to="/cust2">New data</Link>
+                    </li>
                 </ul>
                 </div>
             </nav>

@@ -67,5 +67,3 @@ export default function Traininglist() {
     );
     
 }
-
-//<Button color="primary" size="small" onClick={() => customer(row.original.customer)} >Customer</Button>

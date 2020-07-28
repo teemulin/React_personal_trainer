@@ -32,7 +32,6 @@ export default function Editcustomer(props) {
     const updateCustomer = () => {
         var userID;
         userID = props.customer.links[1];
-        console.log(userID);
         props.updateCustomer(customer, userID.href);
         handleClose();
     }
