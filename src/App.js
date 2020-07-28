@@ -9,7 +9,6 @@ import Navigator from './components/Navigator';
 import Customerlist from './components/Customerlist';
 import Traininglist from "./components/Traininglist";
 import Home from "./components/Home";
-import Customerlist2 from './components/Customerlist2';
 
 //Need to have:
 //List customers and trainings with search and sort
@@ -36,7 +35,6 @@ function App() {
               <Route exact path="/" component={Home} />
               <Route path="/customers" component={Customerlist} />
               <Route path="/trainings" component={Traininglist} />
-              <Route path="/Cust2" component={Customerlist2} />
               <Route render={() => <h1>Page not found</h1>} />
             </Switch>
           </div>

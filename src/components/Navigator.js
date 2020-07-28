@@ -6,7 +6,7 @@ const Navigator = () => {
     return (
         <div>
             <nav className="navbar navbar-expand-sm navbar-light bg-light">
-                <Link className="navbar-brand" to="/">My React Page</Link>
+                <Link className="navbar-brand" to="/">J.Smith's Personal Training</Link>
                 <div>
                 <ul className="navbar-nav mr-auto">
                     <li className="nav-item active">
@@ -19,9 +19,6 @@ const Navigator = () => {
                     
                     <li className="nav-item">
                     <Link className="nav-link" to="/trainings">Trainings</Link>
-                    </li>
-                    <li className="nav-item">
-                    <Link className="nav-link" to="/cust2">New data</Link>
                     </li>
                 </ul>
                 </div>
