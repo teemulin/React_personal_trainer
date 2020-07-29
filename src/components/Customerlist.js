@@ -4,7 +4,7 @@ import Addtraining from "./Addtraining";
 import moment from 'moment';
 
 
-export default function Customerlist2() {
+export default function Customerlist() {
 
     const [customers, setCustomers] = useState([]);
    
@@ -111,7 +111,7 @@ export default function Customerlist2() {
 
                 resolve()
                 }, 1000)
-          }),
+            }),
         }}
                 
       />
