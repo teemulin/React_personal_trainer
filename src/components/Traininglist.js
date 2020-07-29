@@ -23,8 +23,8 @@ export default function Traininglist() {
     }
     
     const columns = [
-        { title: 'Customer', render: row => {
-            return ( row.customer.firstname + " " + row.customer.lastname )} },
+        { title: 'Customer', render: rowData => rowData.customer.firstname + " " + rowData.customer.lastname,
+            customFilterAndSearch: (term, rowData) => (rowData.customer.firstname + " " + rowData.customer.lastname).indexOf(term) != -1 },    
         { title: 'Activity', field: 'activity' },
         { title: 'Date', render: row => { return ( moment(row.value).format('DD.MM.YYYY') ) }},
         { title: 'Duration', field: 'duration' },                              
