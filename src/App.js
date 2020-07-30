@@ -18,27 +18,19 @@ import Home from "./components/Home";
 
 function App() {
   return (
-    <div>
-        <header>
-          <AppBar position="static">
-            <Toolbar>
-              <Typography variant="h6" >
-                  <a className="App-a" href="/" >J.Smith's Personal Training</a>   
-              </Typography>
-            </Toolbar>
-          </AppBar>
-      </header>
+    <div className="App">
+          
+              
       <Router>
-        <div className="App">
           <Navigator />
             <Switch>
-              <Route exact path="/" component={Home} />
+              <Route exact path="/" component={Customerlist} />
               <Route path="/customers" component={Customerlist} />
               <Route path="/trainings" component={Traininglist} />
               <Route render={() => <h1>Page not found</h1>} />
             </Switch>
-          </div>
       </Router>
+      
     </div>
   );
 }

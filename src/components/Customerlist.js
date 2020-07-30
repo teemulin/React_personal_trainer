@@ -1,10 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import ReactTable from 'react-table-v6';
-import 'react-table-v6/react-table.css';
-import Button from '@material-ui/core/Button';
-import Editcustomer from './Editcustomer';
-import Addcustomer from "./Addcustomer";
-import DeleteIcon from '@material-ui/icons/Delete';
+import React, { useEffect, useState} from 'react';
+import MaterialTable from 'material-table';
 import Addtraining from "./Addtraining";
 import moment from 'moment';
 
@@ -19,38 +14,31 @@ export default function Customerlist() {
         fetch('https://customerrest.herokuapp.com/api/customers')
         .then(response => response.json())
         .then(data => setCustomers(data.content))
-        .catch(err => console.error(err))
     }
 
-    const deleteCustomer = (link) => {
-        if(window.confirm('Are you sure?')) {
-            fetch(link, {method: 'DELETE'})
-            .then(res => fetchData())
-            .catch(err => console.error(err))
-        }
-    }
-
-    const updateCustomer = (customer, link) => {
-        fetch(link, {
-            method: 'PUT',
-            headers: {
-                'Content-Type' : 'application/json'
-            },
-            body: JSON.stringify(customer)
-        })
-        .then(res => fetchData())
-        .catch(err => console.error(err))
-    }
-
-    const newCustomer = (customer) => {
+    const newCustomer = (newData) => {
         fetch('https://customerrest.herokuapp.com/api/customers', {
             method: 'POST',
             headers: {
                 'Content-Type' : 'application/json'
             },
-            body: JSON.stringify(customer)
+            body: JSON.stringify(newData)
         })
-        .then(res => fetchData())
+    }
+
+    const deleteCustomer = (oldData) => {
+        fetch(oldData.href, {method: 'DELETE'})
+        .catch(err => console.error(err))
+    }
+
+    const updateCustomer = (newData, oldData) => {
+        fetch(oldData.href, {
+            method: 'PUT',
+            headers: {
+                'Content-Type' : 'application/json'
+            },
+            body: JSON.stringify(newData)
+        })
         .catch(err => console.error(err))
     }
 
@@ -68,62 +56,65 @@ export default function Customerlist() {
     }
 
 
-    const columns = [
-        {
-            Header: 'First name',
-            accessor: 'firstname'
-        },
-        {
-            Header: 'Last name',
-            accessor: 'lastname'
-        },
-        {
-            Header: 'Address',
-            accessor: 'streetaddress'
-        },
-        {
-            Header: 'Postcode',
-            accessor: 'postcode'
-        },
-        {
-            Header: 'City',
-            accessor: 'city'
-        },
-        {
-            Header: 'Email',
-            accessor: 'email'
-        },
-        {
-            Header: 'Phone',
-            accessor: 'phone',
-            sortable: false,
-        },
-        {
-            filterable: false,
-            sortable: false,
-            width: 50,
-            accessor: 'links.0.href',
-            Cell: row => <Editcustomer updateCustomer={updateCustomer} customer={row.original} />
-        },
-        {
-            filterable: false,
-            sortable: false,
-            width: 50,
-            accessor: 'links.0.href',
-            Cell: row => <Button color="secondary" size="small" onClick={() => deleteCustomer(row.value)} ><DeleteIcon fontSize="small"/></Button>
-        },
-        {
-            filterable: false,
-            sortable: false,
-            width: 120,
-            Cell: row => <Addtraining newTraining={newTraining} link={row.original.links} /> 
-        },
-    ]
-
     return (
         <div>
-            <Addcustomer newCustomer={newCustomer} />
-            <ReactTable filterable={true} data={customers} columns={columns} />
-        </div>
-    );
-}
+        <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/icon?family=Material+Icons"
+        />
+      <MaterialTable
+        title="Customers"
+        columns={[
+            { render: row => {
+                return ( <div style={{width: 110}}> <Addtraining newTraining={newTraining} link={row.links} />
+            </div>)}},
+            { title: 'First name', field: 'firstname', },
+            { title: 'Last Name', field: 'lastname' },
+            { title: 'Email', field: 'email' },
+            { title: 'Phone', field: 'phone'},
+            { title: 'Address', field: 'streetaddress' },
+            { title: 'Postcode', field: 'postcode' },
+            { title: 'City', field: 'city' },
+            
+        ]}
+        data={customers}
+
+        editable={{
+            onRowAdd: newData =>
+            new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    setCustomers([...customers, newData]);
+                    newCustomer(newData);
+                    resolve();
+                }, 1000)
+            }),
+            onRowUpdate: (newData, oldData) => 
+            new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    const dataUpdate = [...customers];
+                    const index = oldData.tableData.id;
+                    dataUpdate[index] = newData;
+                    setCustomers([...dataUpdate]);
+                    updateCustomer(newData, oldData.links[1]);
+
+                    resolve();
+                }, 1000)
+            }),
+            onRowDelete: oldData =>
+                new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                    const dataDelete = [...customers];
+                    const index = oldData.tableData.id;
+                    dataDelete.splice(index, 1);
+                    setCustomers([...dataDelete]);
+                    deleteCustomer(oldData.links[1]);
+
+                resolve()
+                }, 1000)
+            }),
+        }}
+                
+      />
+      </div>
+    )
+  }

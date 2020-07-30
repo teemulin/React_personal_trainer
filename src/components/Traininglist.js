@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import ReactTable from 'react-table-v6';
-import 'react-table-v6/react-table.css';
-import Button from '@material-ui/core/Button';
+import MaterialTable from 'material-table';
 import moment from 'moment';
-import DeleteIcon from '@material-ui/icons/Delete';
 
 export default function Traininglist() {
 
@@ -18,54 +15,48 @@ export default function Traininglist() {
         .catch(err => console.error(err))
     }
 
-    const deleteTraining = (link) => {
-        if(window.confirm('Are you sure?')) {
-        fetch(`https://customerrest.herokuapp.com/api/trainings/${link}`, {
+    const deleteTraining = (oldData) => {
+        fetch(`https://customerrest.herokuapp.com/api/trainings/${oldData.id}`, {
             method: 'DELETE'
         })
-        .then(response => fetchData())
-        .catch(err=>console.error(err))
-        }
+        .catch(err => console.error(err))
     }
     
     const columns = [
-        {
-            width: 50,
-            sortable: false,
-            filterable: false,
-            Cell: row => <Button color="secondary" size="small" onClick={() => deleteTraining(row.original.id)} ><DeleteIcon/></Button>
-        },
-        {
-            Header: 'Customer',
-            width: 200,
-            Cell: row => row.original.customer.firstname + " " + row.original.customer.lastname
-        },
-        {
-            Header: 'Activity',
-            accessor: 'activity',
-            width: 200  
-        },
-        {
-            Header: 'Date',
-            accessor: 'date',
-            Cell: row => moment(row.value).format('DD-MM-YYYY'),
-            width: 150
-        },
-        {
-            Header: 'Duration',
-            accessor: 'duration',
-            filterable: false,
-            width: 100
-        },
-                      
+        { title: 'Customer', render: rowData => rowData.customer.firstname + " " + rowData.customer.lastname,
+            customFilterAndSearch: (term, rowData) => (rowData.customer.firstname + " " + rowData.customer.lastname).indexOf(term) != -1 },    
+        { title: 'Activity', field: 'activity' },
+        { title: 'Date', render: row => { return ( moment(row.value).format('DD.MM.YYYY') ) }},
+        { title: 'Duration', field: 'duration' },                              
     ]
 
     return (
         <div>
-            <ReactTable filterable={true} data={trainings} columns={columns} />
+            <link
+                rel="stylesheet"
+                href="https://fonts.googleapis.com/icon?family=Material+Icons"
+            />
+            <MaterialTable 
+                title="Trainings"
+                columns={columns}
+                data={trainings}
+
+                editable={{
+                    onRowDelete: oldData =>
+                        new Promise((resolve, reject) => {
+                            setTimeout(() => {
+                            const dataDelete = [...trainings];
+                            const index = oldData.tableData.id;
+                            dataDelete.splice(index, 1);
+                            setTrainings([...dataDelete]);
+                            deleteTraining(oldData);
+
+                            resolve()
+                            }, 1000)
+                        }),
+                }}
+            />
         </div>
     );
     
 }
-
-//<Button color="primary" size="small" onClick={() => customer(row.original.customer)} >Customer</Button>

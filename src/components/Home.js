@@ -6,6 +6,7 @@ export default function Home() {
 
     return (
         <div className="Home">
+            Welcome traveller!
         <img src={logo} className="Home-logo" alt="logo" />
         </div>
     );
