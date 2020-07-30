@@ -63,7 +63,7 @@ export default function Customerlist() {
         href="https://fonts.googleapis.com/icon?family=Material+Icons"
         />
       <MaterialTable
-        title="Remote Data Preview"
+        title="Customers"
         columns={[
             { render: row => {
                 return ( <div style={{width: 110}}> <Addtraining newTraining={newTraining} link={row.links} />
