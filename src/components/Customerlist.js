@@ -3,7 +3,6 @@ import MaterialTable from 'material-table';
 import Addtraining from "./Addtraining";
 import moment from 'moment';
 
-
 export default function Customerlist() {
 
     const [customers, setCustomers] = useState([]);
