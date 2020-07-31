@@ -24,9 +24,9 @@ export default function Traininglist() {
     
     const columns = [
         { title: 'Customer', render: rowData => rowData.customer.firstname + " " + rowData.customer.lastname,
-            customFilterAndSearch: (term, rowData) => (rowData.customer.firstname + " " + rowData.customer.lastname).indexOf(term) != -1 },    
+            customFilterAndSearch: (term, rowData) => (rowData.customer.firstname + " " + rowData.customer.lastname).indexOf(term) !== -1, },    
         { title: 'Activity', field: 'activity' },
-        { title: 'Date', render: row => { return ( moment(row.value).format('DD.MM.YYYY') ) }},
+        { title: 'Date', field: 'date', render: rowData => moment(rowData.date).format('DD.MM.YYYY') },
         { title: 'Duration', field: 'duration' },                              
     ]
 
